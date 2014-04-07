@@ -2809,3 +2809,5 @@ Trspi_UnloadBlob_NV_DATA_PUBLIC(UINT64 *offset, BYTE *blob, TPM_NV_DATA_PUBLIC *
 
 	return TSS_SUCCESS;
 }
+
+/* EOF */

@@ -44,11 +44,16 @@ MUTEX_DECLARE_EXTERN(mem_cache_lock);
 #define TSS_PSFILE_INCREMENT_NUM_KEYS	1
 #define TSS_PSFILE_DECREMENT_NUM_KEYS	0
 
-#ifdef __GNUC__
-#define __no_optimize __attribute__((optimize("O0")))
+#if defined(__GNUC__) && defined(__GNUC_MINOR__)
+/* attribute introduced in GCC 4.4: */
+# if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4))
+#  define __no_optimize __attribute__((optimize("O0")))
+# else
+#  define __no_optimize /* nothing */
+# endif /* GCC 4.4+ */
 #else
-#define __no_optimize
-#endif
+#  define __no_optimize /* nothing */
+#endif /* __GNUC__ && __GNUC_MINOR__ */
 
 void *calloc_tspi(TSS_HCONTEXT, UINT32);
 TSS_RESULT free_tspi(TSS_HCONTEXT, void *);

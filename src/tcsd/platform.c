@@ -9,14 +9,14 @@
  */
 
 
-#if (defined (__FreeBSD__) || defined (__OpenBSD__))
-#include <sys/param.h>
-#include <sys/sysctl.h>
-#include <err.h>
+#if (defined (__FreeBSD__) || defined (__OpenBSD__) || defined(__APPLE__))
+# include <sys/param.h>
+# include <sys/sysctl.h>
+# include <err.h>
 #elif (defined (__linux) || defined (linux) || defined(__GLIBC__))
-#include <utmp.h>
+# include <utmp.h>
 #elif (defined (SOLARIS))
-#include <utmpx.h>
+# include <utmpx.h>
 #endif
 
 #include <sys/time.h>
@@ -71,10 +71,15 @@ platform_get_runlevel()
 	}
 
 	if (flag) {
-		//printf("prev_runlevel=%c, runlevel=%c\n", save.ut_pid / 256, save.ut_pid % 256);
+#if 0
+		printf("prev_runlevel=%c, runlevel=%c\n", (save.ut_pid / 256),
+			   (save.ut_pid % 256));
+#endif /* 0 */
 		runlevel = save.ut_pid % 256;
 	} else {
-		//printf("unknown\n");
+#if 0
+		printf("unknown\n");
+#endif /* 0 */
 		runlevel = 'u';
 	}
 
@@ -82,7 +87,7 @@ platform_get_runlevel()
 
 	return runlevel;
 }
-#elif (defined (__FreeBSD__) || defined (__OpenBSD__))
+#elif (defined (__FreeBSD__) || defined (__OpenBSD__) || defined (__APPLE__))
 
 char
 platform_get_runlevel()
@@ -92,7 +97,7 @@ platform_get_runlevel()
 
 	mib[0] = CTL_KERN;
 	mib[1] = KERN_SECURELVL;
-	
+
 	len = sizeof(rlevel);
 	if (sysctl(mib,2,&rlevel,&len, NULL,0) == -1) {
 		err(1,"Could not get runlevel");
@@ -103,7 +108,7 @@ platform_get_runlevel()
 #else
 	if (rlevel == -1)
 #endif
-		return 's';	
+		return 's';
 
 	return rlevel + '0';
 }
@@ -133,3 +138,5 @@ platform_get_runlevel()
 	return runlevel;
 }
 #endif
+
+/* EOF */

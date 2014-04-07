@@ -157,7 +157,9 @@ void	   *tcsd_thread_run(void *);
 void	   thread_signal_init();
 
 /* signal handling */
-struct sigaction tcsd_sa_int;
-struct sigaction tcsd_sa_chld;
+extern struct sigaction tcsd_sa_int;
+extern struct sigaction tcsd_sa_chld;
 
-#endif
+#endif /* !_TCSD_H_ */
+
+/* EOF */

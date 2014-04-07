@@ -120,9 +120,11 @@ typedef struct tdTSS_KEY {
 
 #if (defined (__linux) || defined (linux) || defined (SOLARIS) || defined (__GLIBC__))
 #define BSD_CONST
-#elif (defined (__OpenBSD__) || defined (__FreeBSD__))
+#elif (defined (__OpenBSD__) || defined (__FreeBSD__) || defined (__APPLE__))
 #define BSD_CONST const
 #endif
 
 
 #endif
+
+/* EOF */
