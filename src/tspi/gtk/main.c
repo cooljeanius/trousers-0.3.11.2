@@ -15,7 +15,7 @@
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
-#endif
+#endif /* HAVE_CONFIG_H */
 
 #include <sys/types.h>
 #include <string.h>
@@ -30,6 +30,7 @@
 
 #include "interface.h"
 #include "support.h"
+#include "spi_utils.h"
 
 /*
  * DisplayPINWindow()
@@ -49,10 +50,10 @@ DisplayPINWindow(BYTE *string, UINT32 *string_len, BYTE *popup)
   ud.string_len = 0;
 
 #ifdef ENABLE_NLS
-  bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-#endif
+  bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+  textdomain(GETTEXT_PACKAGE);
+#endif /* ENABLE_NLS */
 
   gtk_set_locale();
   gtk_init_check((int *)NULL, (char ***)NULL);
@@ -91,10 +92,10 @@ DisplayNewPINWindow(BYTE *string, UINT32 *string_len, BYTE *popup)
   ud.string_len = 0;
 
 #ifdef ENABLE_NLS
-  bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-#endif
+  bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+  textdomain(GETTEXT_PACKAGE);
+#endif /* ENABLE_NLS */
 
   gtk_set_locale();
   gtk_init_check((int *)NULL, (char ***)NULL);
@@ -114,4 +115,6 @@ DisplayNewPINWindow(BYTE *string, UINT32 *string_len, BYTE *popup)
 
   return TSS_SUCCESS;
 }
+
+/* EOF */
 

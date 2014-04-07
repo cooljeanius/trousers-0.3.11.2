@@ -7,15 +7,17 @@ libtspi_la_LIBADD=${top_builddir}/src/trspi/libtrousers.la
 # -version-info current:revision:age
 #
 # 1. Start with version information of 0:0:0 for each libtool library.
-# 2. Update the version information only immediately before a public release of your software.
-#    More frequent updates are unnecessary, and only guarantee that the current interface
-#    number gets larger faster.
-# 3. If the library source code has changed at all since the last update, then increment
-#    revision (c:r:a becomes c:r+1:a).
-# 4. If any interfaces have been added, removed, or changed since the last update, increment
-#    current, and set revision to 0.
-# 5. If any interfaces have been added since the last public release, then increment age.
-# 6. If any interfaces have been removed since the last public release, then set age to 0.
+# 2. Update the version information only immediately before a public
+#    release of your software. More frequent updates are unnecessary, and
+#    only guarantee that the current interface number gets larger faster.
+# 3. If the library source code has changed at all since the last update,
+#    then increment revision (c:r:a becomes c:r+1:a).
+# 4. If any interfaces have been added, removed, or changed since the last
+#    update, increment current, and set revision to 0.
+# 5. If any interfaces have been added since the last public release, then
+#    increment age.
+# 6. If any interfaces have been removed since the last public release,
+#    then set age to 0.
 
 libtspi_la_LDFLAGS=-version-info 3:0:2 -lpthread @CRYPTOLIB@
 
@@ -214,7 +216,8 @@ endif
 if HAVE_GTK
 libtspi_la_CFLAGS+=@GTK_CFLAGS@
 libtspi_la_LDFLAGS+=@GTK_LIBS@
-libtspi_la_SOURCES+=gtk/main.c gtk/support.c gtk/interface.c gtk/callbacks.c
+libtspi_la_SOURCES+=gtk/main.c gtk/support.c gtk/interface.c gtk/callbacks.c gtk/interface.h gtk/support.h gtk/callbacks.h
+noinst_HEADERS=gtk/interface.h gtk/support.h gtk/callbacks.h
 endif
 if OPENSSL_UI
 libtspi_la_LDFLAGS+=-lssl

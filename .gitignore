@@ -21,3 +21,4 @@ conftest*
 dist/tcsd.conf
 dist/fedora/trousers.spec
 dist/trousers.spec
+po/POTFILES

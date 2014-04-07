@@ -3,6 +3,7 @@
 #
 
 AC_INIT([trousers],[0.3.11.2],[trousers-tech@lists.sf.net])
+AC_CONFIG_MACRO_DIR([m4])
 
 TSS_SPEC_MAJOR=1
 TSS_SPEC_MINOR=2
@@ -93,7 +94,9 @@ AC_ARG_ENABLE([strict-spec-compliance],
 MATH_DEFINE=BI_OPENSSL
 AC_ARG_WITH([gmp],
 	    [AS_HELP_STRING([--with-gmp],[build TrouSerS with the GMP math lib (used in DAA)])],
-		[AC_CHECK_LIB([gmp],[__gmp_rand],[],[])
+		[AC_CHECK_LIB([gmp],[__gmp_rand],[],[
+                   AC_CHECK_LIB([gmp],[main])
+                ])
 		AC_CHECK_HEADERS([gmp.h])
 		MATH_DEFINE=BI_GMP
                 #FIXME: this gets enabled even when "--without" is used:
@@ -120,6 +123,7 @@ if test "x${GUI}" = "xgtk"; then
 		AM_CONDITIONAL([HAVE_GTK],[true]),
 		[AM_CONDITIONAL([HAVE_GTK],[false])
 		AC_MSG_ERROR([Please install the gtk2 package that comes with development headers in it for your distro, or select another gui option.])])
+        AC_CHECK_HEADERS([gtk/gtk.h gdk/gdkkeysyms.h])
 	AM_CONDITIONAL([OPENSSL_UI],[false])
 	AC_SUBST([GTK_CFLAGS])
 	AC_SUBST([GTK_LIBS])
@@ -339,13 +343,15 @@ AM_CONDITIONAL([TSS_BUILD_ASYM_CRYPTO],
 AM_CONDITIONAL([TSS_BUILD_SYM_CRYPTO],[test -z ${TSS_BUILD_AIK_TRUE} || \
 				       test -z ${TSS_BUILD_TRANSPORT_TRUE}])
 
-#GETTEXT_PACKAGE=trousers
-#AC_SUBST([GETTEXT_PACKAGE])
-#AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["${GETTEXT_PACKAGE}"])
+# begin Glade section
+
+GETTEXT_PACKAGE=trousers
+AC_SUBST([GETTEXT_PACKAGE])
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["${GETTEXT_PACKAGE}"])
 
 dnl# Add the languages which your application supports here.
-#ALL_LINGUAS=""
-#AM_GLIB_GNU_GETTEXT
+ALL_LINGUAS=""
+AM_GLIB_GNU_GETTEXT
 
 # end Glade section
 
