@@ -4,6 +4,8 @@
 
 AC_INIT([trousers],[0.3.11.2],[trousers-tech@lists.sf.net])
 AC_CONFIG_MACRO_DIR([m4])
+# warning: the move to autoheader here might cause some breakages:
+AC_CONFIG_HEADERS([config.h])
 
 TSS_SPEC_MAJOR=1
 TSS_SPEC_MINOR=2
@@ -347,7 +349,8 @@ AM_CONDITIONAL([TSS_BUILD_SYM_CRYPTO],[test -z ${TSS_BUILD_AIK_TRUE} || \
 
 GETTEXT_PACKAGE=trousers
 AC_SUBST([GETTEXT_PACKAGE])
-AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["${GETTEXT_PACKAGE}"])
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["${GETTEXT_PACKAGE}"],
+                   [the package name to use with gettext])
 
 dnl# Add the languages which your application supports here.
 ALL_LINGUAS=""

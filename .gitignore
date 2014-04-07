@@ -22,3 +22,5 @@ dist/tcsd.conf
 dist/fedora/trousers.spec
 dist/trousers.spec
 po/POTFILES
+config.h
+stamp-h*

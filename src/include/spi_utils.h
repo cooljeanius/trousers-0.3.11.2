@@ -12,8 +12,12 @@
 #ifndef _SPI_UTILS_H_
 #define _SPI_UTILS_H_
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include "threads.h"
-#include <netinet/in.h> // for endian routines
+#include <netinet/in.h> /* for endian routines */
 
 #include "trousers_types.h"
 #include "trousers/trousers.h"
