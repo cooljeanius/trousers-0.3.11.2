@@ -355,6 +355,9 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["${GETTEXT_PACKAGE}"],
 dnl# Add the languages which your application supports here.
 ALL_LINGUAS=""
 AM_GLIB_GNU_GETTEXT
+AM_ICONV
+dnl# because we use the glib version of the gettext macros, ignore the
+dnl# autoscan warning saying to use the regular version
 
 # end Glade section
 
@@ -367,20 +370,21 @@ AC_CHECK_TYPES([pthread_t])
 
 # Checks for programs.
 AC_DISABLE_STATIC
-AC_PROG_CC
+AC_PROG_CPP
 AC_PROG_CXX
+AC_PROG_INSTALL
+AC_PROG_LN_S
 AC_PROG_MKDIR_P
 AC_PROG_RANLIB
 LT_INIT([disable-static])
 
 # Checks for typedefs, structures, and compiler characteristics.
-dnl#FIXME: use this with autoheader:
 AC_C_BIGENDIAN([AC_DEFINE([_BIG_ENDIAN],[1],[big-endian host])])
 AC_CHECK_DECL([htole32],
               [AC_DEFINE([HTOLE_DEFINED],[1],
                          [htole32 function is available])
 ])
-dnl#FIXME: make this ifdef-ed when we transition to autoheader:
+dnl#FIXME: make this ifdef-ed now that we have transitioned to autoheader:
 AC_C_CONST([AC_DEFINE_UNQUOTED([BSD_CONST],["const"],
                                [define for XPG6-compliance for iconv])
 ])
@@ -403,11 +407,12 @@ AC_CHECK_HEADER([sys/byteorder.h],
                 [AC_DEFINE([HAVE_BYTEORDER_H],[1],[sys/byteorder.h header])
 ])
 AC_HEADER_TIME
-AC_CHECK_HEADERS([arpa/inet.h err.h fcntl.h langinfo.h limits.h \
-                  malloc.h malloc/malloc.h netdb.h netinet/in.h \
-                  sys/file.h sys/ioctl.h sys/param.h sys/socket.h \
-                  sys/time.h sys/sysctl.h syslog.h utmp.h utmpx.h \
-                  wchar.h])
+AC_CHECK_HEADERS([arpa/inet.h err.h fcntl.h langinfo.h libintl.h \
+                  limits.h malloc.h malloc/malloc.h netdb.h \
+                  netinet/in.h sys/file.h sys/ioctl.h sys/param.h \
+                  sys/socket.h sys/time.h sys/sysctl.h syslog.h \
+                  utmp.h utmpx.h wchar.h])
+AC_CHECK_HEADERS_ONCE([locale.h])
 
 # Checks for library functions.
 AC_CHECK_FUNC([daemon],

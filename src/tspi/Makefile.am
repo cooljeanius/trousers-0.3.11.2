@@ -216,8 +216,8 @@ endif
 if HAVE_GTK
 libtspi_la_CFLAGS+=@GTK_CFLAGS@
 libtspi_la_LDFLAGS+=@GTK_LIBS@
-libtspi_la_SOURCES+=gtk/main.c gtk/support.c gtk/interface.c gtk/callbacks.c gtk/interface.h gtk/support.h gtk/callbacks.h
-noinst_HEADERS=gtk/interface.h gtk/support.h gtk/callbacks.h
+libtspi_la_SOURCES+=gtk/main.c gtk/support.c gtk/interface.c gtk/callbacks.c gtk/interface.h gtk/support.h gtk/callbacks.h gtk/gettext.h
+noinst_HEADERS=gtk/interface.h gtk/support.h gtk/callbacks.h gtk/gettext.h
 endif
 if OPENSSL_UI
 libtspi_la_LDFLAGS+=-lssl

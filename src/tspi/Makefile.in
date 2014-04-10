@@ -174,7 +174,7 @@ target_triplet = @target@
 @TSS_BUILD_QUOTE2_TRUE@am__append_81 = -DTSS_BUILD_QUOTE2
 @HAVE_GTK_TRUE@am__append_82 = @GTK_CFLAGS@
 @HAVE_GTK_TRUE@am__append_83 = @GTK_LIBS@
-@HAVE_GTK_TRUE@am__append_84 = gtk/main.c gtk/support.c gtk/interface.c gtk/callbacks.c gtk/interface.h gtk/support.h gtk/callbacks.h
+@HAVE_GTK_TRUE@am__append_84 = gtk/main.c gtk/support.c gtk/interface.c gtk/callbacks.c gtk/interface.h gtk/support.h gtk/callbacks.h gtk/gettext.h
 @OPENSSL_UI_TRUE@am__append_85 = -lssl
 @OPENSSL_UI_TRUE@am__append_86 = ssl_ui.c
 @TSS_BUILD_NV_TRUE@am__append_87 = tspi_nv.c obj_nv.c tsp_nv.c rpc/@RPC@/rpc_nv.c
@@ -188,6 +188,8 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(am__noinst_HEADERS_DIST)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/glib-gettext.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
 	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/pkg.m4 \
@@ -272,8 +274,8 @@ am__libtspi_la_SOURCES_DIST = log.c spi_utils.c obj.c obj_policy.c \
 	rpc/@RPC@/rpc_audit.c tsp_seal.c tspi_quote2.c tsp_quote2.c \
 	rpc/@RPC@/rpc_quote2.c gtk/main.c gtk/support.c \
 	gtk/interface.c gtk/callbacks.c gtk/interface.h gtk/support.h \
-	gtk/callbacks.h ssl_ui.c tspi_nv.c obj_nv.c tsp_nv.c \
-	rpc/@RPC@/rpc_nv.c tspi_delegate.c tsp_delegate.c \
+	gtk/callbacks.h gtk/gettext.h ssl_ui.c tspi_nv.c obj_nv.c \
+	tsp_nv.c rpc/@RPC@/rpc_nv.c tspi_delegate.c tsp_delegate.c \
 	obj_delfamily.c rpc/@RPC@/rpc_delegate.c tspi_cmk.c \
 	obj_migdata.c rpc/@RPC@/rpc_cmk.c
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -487,7 +489,7 @@ am__can_run_installinfo = \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
 am__noinst_HEADERS_DIST = gtk/interface.h gtk/support.h \
-	gtk/callbacks.h
+	gtk/callbacks.h gtk/gettext.h
 HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -558,11 +560,13 @@ INSTOBJEXT = @INSTOBJEXT@
 INTLLIBS = @INTLLIBS@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
+LIBICONV = @LIBICONV@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LIPO = @LIPO@
 LN_S = @LN_S@
+LTLIBICONV = @LTLIBICONV@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
@@ -717,7 +721,7 @@ libtspi_la_SOURCES = log.c spi_utils.c obj.c obj_policy.c tsp_policy.c \
 	$(am__append_74) $(am__append_76) $(am__append_78) \
 	$(am__append_80) $(am__append_84) $(am__append_86) \
 	$(am__append_87) $(am__append_89) $(am__append_91)
-@HAVE_GTK_TRUE@noinst_HEADERS = gtk/interface.h gtk/support.h gtk/callbacks.h
+@HAVE_GTK_TRUE@noinst_HEADERS = gtk/interface.h gtk/support.h gtk/callbacks.h gtk/gettext.h
 all: all-am
 
 .SUFFIXES:

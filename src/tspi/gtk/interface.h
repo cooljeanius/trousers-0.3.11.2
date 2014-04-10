@@ -7,6 +7,8 @@
 #  include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include "gettext.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>

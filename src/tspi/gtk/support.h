@@ -3,7 +3,12 @@
 #ifndef __SUPPORT_H__
 #define __SUPPORT_H__ 1
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include <gtk/gtk.h>
+#include "gettext.h"
 
 extern GtkWidget* lookup_widget(GtkWidget *widget, const gchar *widget_name);
 extern void __tspi_add_pixmap_directory(const gchar *directory);
