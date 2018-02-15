@@ -1,10 +1,10 @@
-#                                               -*- Autoconf -*-
-# configure.ac for the trousers project
+dnl#                                               -*- Autoconf -*-
+dnl# configure.ac for the trousers project
 #
 
 AC_INIT([trousers],[0.3.11.2],[trousers-tech@lists.sf.net])
 AC_CONFIG_MACRO_DIR([m4])
-# warning: the move to autoheader here might cause some breakages:
+dnl# warning: the move to autoheader here might cause some breakages:
 AC_CONFIG_HEADERS([config.h])
 
 TSS_SPEC_MAJOR=1
@@ -19,8 +19,9 @@ AM_MAINTAINER_MODE
 
 # Debugging support
 AC_ARG_ENABLE([debug],
-    [AS_HELP_STRING([--enable-debug],[turn on all trousers debugging flags [default=off]])],
-    [AC_MSG_RESULT([*** Enabling debugging at user request ***])],[])
+    [AS_HELP_STRING([--enable-debug],
+                    [turn on all trousers debugging flags [default=off]])],
+    [AC_MSG_RESULT([*** Enabling debugging at user request ***])],[])dnl
 
 # If the user has not set CFLAGS, do something appropriate
 test_CFLAGS=${CFLAGS+set}
@@ -61,36 +62,40 @@ AC_ARG_WITH([openssl],
 		AC_SUBST([OPENSSL_LIB_DIR])
 	 fi],
 	[AC_MSG_RESULT([no])
-	 AC_SUBST([OPENSSL_LIB_DIR],[])])
+	 AC_SUBST([OPENSSL_LIB_DIR],[])])dnl
 
 # The tspi Makefile will look for trspi/crypto/@CRYPTO_PACKAGE@/crypto.c
 # Future crypto packages can go in their own subdir of trspi/crypto
 # and a check for them should be made here
 AC_CHECK_LIB([crypto],[EVP_DigestUpdate],
-		[CRYPTO_PACKAGE='openssl'],
-		[AC_MSG_ERROR([openssl is currently the only supported crypto library for trousers. Please install openssl from http://www.openssl.org or the -devel package from your distro])
-])
-AC_SUBST([CRYPTO_PACKAGE])
-AC_SUBST([CRYPTOLIB],[-lcrypto])
+	     [CRYPTO_PACKAGE='openssl'],
+	     [AC_MSG_ERROR([openssl is currently the only supported crypto library for trousers. Please install openssl from http://www.openssl.org or the -devel package from your distro])
+])dnl
+AC_SUBST([CRYPTO_PACKAGE])dnl
+AC_SUBST([CRYPTOLIB],[-lcrypto])dnl
 
 AC_ARG_ENABLE([gcov],
-		[AS_HELP_STRING([--enable-gcov],[turn on gcov code coverage flags [default=off]])],
-		[CFLAGS="${CFLAGS} -ftest-coverage -fprofile-arcs"
-		 AC_MSG_RESULT([*** Enabling gcov at user request ***])],[])
+	      [AS_HELP_STRING([--enable-gcov],
+                              [turn on gcov code coverage flags [default=off]])],
+	      [CFLAGS="${CFLAGS} -ftest-coverage -fprofile-arcs"
+	       AC_MSG_RESULT([*** Enabling gcov at user request ***])],[])dnl
 
 # profiling support
 AC_ARG_ENABLE([gprof],
-		[AS_HELP_STRING([--enable-gprof],[enable profiling with gprof [default=off]])],
-		[CFLAGS="${CFLAGS} -pg"
-		 AC_MSG_RESULT([*** Enabling profiling at user request ***])],[])
+	      [AS_HELP_STRING([--enable-gprof],
+                              [enable profiling with gprof [default=off]])],
+	      [CFLAGS="${CFLAGS} -pg"
+	       AC_MSG_RESULT([*** Enabling profiling at user request ***])],
+              [])dnl
 
 SPEC_COMP=0
 # strict spec compliance
 AC_ARG_ENABLE([strict-spec-compliance],
-		[AS_HELP_STRING([--enable-strict-spec-compliance],[build TrouSerS as strictly spec compliant [default=off]])],
-		[CFLAGS="${CFLAGS} -DTSS_SPEC_COMPLIANCE"
-		 SPEC_COMP=1
-		 AC_MSG_RESULT([*** Enabling spec compliance at user request ***])],[])
+	      [AS_HELP_STRING([--enable-strict-spec-compliance],
+                              [build TrouSerS as strictly spec compliant [default=off]])],
+	      [CFLAGS="${CFLAGS} -DTSS_SPEC_COMPLIANCE"
+	       SPEC_COMP=1
+	       AC_MSG_RESULT([*** Enabling spec compliance at user request ***])],[])dnl
 
 # daa math lib: gmp or openssl (default openssl)
 MATH_DEFINE=BI_OPENSSL
@@ -113,9 +118,10 @@ CFLAGS="${CFLAGS} -D${MATH_DEFINE}"
 
 GUI=openssl
 AC_ARG_WITH([gui],
-	    [AS_HELP_STRING([--with-gui],[type of gui popup (gtk/none) [default=gtk]])],
+	    [AS_HELP_STRING([--with-gui],
+                            [type of gui popup (gtk/none) [default=gtk]])],
 	    [GUI=${withval}],
-	    [])
+	    [])dnl
 
 if test "x${GUI}" = "xgtk"; then
 	# section imported from Glade compile
@@ -135,7 +141,7 @@ elif test "x${GUI}" = "xopenssl"; then
 	AM_CONDITIONAL([HAVE_GTK],[false])
 elif test "x${GUI}" = "xnone"; then
 	if test ${SPEC_COMP} -eq 1; then
-		AC_MSG_ERROR([Popups must be enabled in strict spec compliance mode])
+	  AC_MSG_ERROR([Popups must be enabled in strict spec compliance mode])
 	fi
 	AC_MSG_RESULT([*** Disabling GUI popups at user request ***])
 	AC_MSG_RESULT([*** WARNING: This may break apps! ***])
@@ -146,15 +152,15 @@ else
 	AC_MSG_ERROR(["gtk", "openssl" and "none" are the only supported gui options for trousers])
 fi
 
-#
-# The default port that the TCS daemon listens on
-#
-AC_SUBST([TCSD_DEFAULT_PORT],[30003])
-#
-# The RPC mechanism to build into both libtspi and the tcsd
-#
-# AC_SUBST([RPC],["soap"])
-AC_SUBST([RPC],["tcstp"])
+dnl#
+dnl# The default port that the TCS daemon listens on
+dnl#
+AC_SUBST([TCSD_DEFAULT_PORT],[30003])dnl
+dnl#
+dnl# The RPC mechanism to build into both libtspi and the tcsd
+dnl#
+AC_SUBST([RPC_SOAP],["soap"])dnl
+AC_SUBST([RPC],["tcstp"])dnl
 
 #
 # API= The TSS API level to build by default.
@@ -170,9 +176,10 @@ AC_SUBST([RPC],["tcstp"])
 #
 API=1.2
 AC_ARG_WITH([api],
-	    [AS_HELP_STRING([--with-api],[Version of the TSS API to build [default=1.2]])],
+	    [AS_HELP_STRING([--with-api],
+                            [Version of the TSS API to build [default=1.2]])],
 	    [API=${withval}],
-	    [])
+	    [])dnl
 
 if test "x${API}" != "x1.1" && test "x${API}" != "x1.2"; then
 	AC_MSG_ERROR(["1.1" and "1.2" are the only supported API versions for trousers.
@@ -343,14 +350,14 @@ AM_CONDITIONAL([TSS_BUILD_ASYM_CRYPTO],
 		test -z ${TSS_BUILD_KEY_TRUE} || \
 		test -z ${TSS_BUILD_DAA_TRUE}])
 AM_CONDITIONAL([TSS_BUILD_SYM_CRYPTO],[test -z ${TSS_BUILD_AIK_TRUE} || \
-				       test -z ${TSS_BUILD_TRANSPORT_TRUE}])
+				       test -z ${TSS_BUILD_TRANSPORT_TRUE}])dnl
 
 # begin Glade section
 
 GETTEXT_PACKAGE=trousers
 AC_SUBST([GETTEXT_PACKAGE])
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["${GETTEXT_PACKAGE}"],
-                   [the package name to use with gettext])
+                   [the package name to use with gettext])dnl
 
 dnl# Add the languages which your application supports here.
 ALL_LINGUAS=""
@@ -366,7 +373,7 @@ AC_CHECK_HEADER([pthread.h],
                 [AC_DEFINE([HAVE_PTHREAD_H],[1],[pthread header])
 ])
 AC_CHECK_LIB([pthread],[pthread_mutex_init])
-AC_CHECK_TYPES([pthread_t])
+AC_CHECK_TYPES([pthread_t])dnl
 
 # Checks for programs.
 AC_DISABLE_STATIC
@@ -376,7 +383,7 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MKDIR_P
 AC_PROG_RANLIB
-LT_INIT([disable-static])
+LT_INIT([disable-static])dnl
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_BIGENDIAN([AC_DEFINE([_BIG_ENDIAN],[1],[big-endian host])])
@@ -389,6 +396,7 @@ AC_C_CONST([AC_DEFINE_UNQUOTED([BSD_CONST],["const"],
                                [define for XPG6-compliance for iconv])
 ])
 AC_C_INLINE
+gl_EXTERN_INLINE
 AC_TYPE_INT8_T
 AC_TYPE_MODE_T
 AC_TYPE_OFF_T
@@ -400,7 +408,7 @@ AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 AC_CHECK_SIZEOF([long int])
-AC_CHECK_ALIGNOF([long int])
+AC_CHECK_ALIGNOF([long int])dnl
 
 # Checks for header files.
 AC_CHECK_HEADER([sys/byteorder.h],
@@ -412,7 +420,7 @@ AC_CHECK_HEADERS([arpa/inet.h err.h fcntl.h langinfo.h libintl.h \
                   netinet/in.h sys/file.h sys/ioctl.h sys/param.h \
                   sys/socket.h sys/time.h sys/sysctl.h syslog.h \
                   utmp.h utmpx.h wchar.h])
-AC_CHECK_HEADERS_ONCE([locale.h])
+AC_CHECK_HEADERS_ONCE([locale.h])dnl
 
 # Checks for library functions.
 AC_CHECK_FUNC([daemon],
@@ -423,11 +431,11 @@ AC_FUNC_MMAP
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([endpwent err ftruncate gethostbyaddr gethostbyname \
                 inet_ntoa memset mkdir munmap nl_langinfo setenv \
-                socket strcasecmp strdup strerror strncasecmp sysctl])
+                socket strcasecmp strdup strerror strncasecmp sysctl])dnl
  
 # Final CFLAGS additions:
 if test "x${GCC}" = "xyes"; then
-	CFLAGS="${CFLAGS} -W -Wall -Wno-unused-parameter -Wsign-compare"
+	CFLAGS="${CFLAGS} -Wall -Wextra -Wno-unused-parameter -Wsign-compare"
 fi
 
 CFLAGS="${CFLAGS} -I../include \
@@ -438,7 +446,7 @@ CFLAGS="${CFLAGS} -I../include \
 -DTSS_SPEC_MINOR=${TSS_SPEC_MINOR}"
 CFLAGS_HARSH="${CFLAGS} -I../include -std=c99 -pedantic -W -Wall"
 KERNEL_VERSION=`uname -r`
-AC_SUBST([CFLAGS])
+AC_SUBST([CFLAGS])dnl
 
 # When we build the rpms, prefix will be /usr. This will do some things
 # that make sense, like put our sbin stuff in /usr/sbin and our library
@@ -454,6 +462,7 @@ elif test x"${prefix}" = x"NONE"; then
 	localstatedir="/usr/local/var"
 fi
 
+# Output.
 AC_CONFIG_FILES([dist/tcsd.conf \
 	  dist/fedora/trousers.spec \
 	  dist/trousers.spec \

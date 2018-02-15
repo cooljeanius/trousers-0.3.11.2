@@ -29,7 +29,7 @@
 # We need this here as well, since someone might use autoconf-2.5x
 # to configure GLib then an older version to configure a package
 # using AM_GLIB_GNU_GETTEXT
-AC_PREREQ(2.53)
+AC_PREREQ([2.69])
 
 dnl
 dnl We go to great lengths to make sure that aclocal won't 
@@ -49,8 +49,7 @@ glib_DEFUN([GLIB_LC_MESSAGES],
   [AC_CHECK_HEADERS([locale.h])
     if test $ac_cv_header_locale_h = yes; then
     AC_CACHE_CHECK([for LC_MESSAGES], am_cv_val_LC_MESSAGES,
-      [AC_TRY_LINK([#include <locale.h>], [return LC_MESSAGES],
-       am_cv_val_LC_MESSAGES=yes, am_cv_val_LC_MESSAGES=no)])
+      [AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <locale.h>]], [[return LC_MESSAGES]])],[am_cv_val_LC_MESSAGES=yes],[am_cv_val_LC_MESSAGES=no])])
     if test $am_cv_val_LC_MESSAGES = yes; then
       AC_DEFINE(HAVE_LC_MESSAGES, 1,
         [Define if your <locale.h> file defines LC_MESSAGES.])
@@ -97,51 +96,6 @@ fi
 AC_SUBST($1)dnl
 ])
 
-dnl Checks for special options needed on Mac OS X.
-dnl Defines INTL_MACOSX_LIBS.
-dnl
-dnl Copied from intlmacosx.m4 in gettext, GPL.
-dnl Copyright (C) 2004-2013 Free Software Foundation, Inc.
-glib_DEFUN([glib_gt_INTL_MACOSX],
-[
-  dnl Check for API introduced in Mac OS X 10.2.
-  AC_CACHE_CHECK([for CFPreferencesCopyAppValue],
-    [gt_cv_func_CFPreferencesCopyAppValue],
-    [gt_save_LIBS="$LIBS"
-     LIBS="$LIBS -Wl,-framework -Wl,CoreFoundation"
-     AC_LINK_IFELSE(
-       [AC_LANG_PROGRAM(
-          [[#include <CoreFoundation/CFPreferences.h>]],
-          [[CFPreferencesCopyAppValue(NULL, NULL)]])],
-       [gt_cv_func_CFPreferencesCopyAppValue=yes],
-       [gt_cv_func_CFPreferencesCopyAppValue=no])
-     LIBS="$gt_save_LIBS"])
-  if test $gt_cv_func_CFPreferencesCopyAppValue = yes; then
-    AC_DEFINE([HAVE_CFPREFERENCESCOPYAPPVALUE], [1],
-      [Define to 1 if you have the Mac OS X function CFPreferencesCopyAppValue in the CoreFoundation framework.])
-  fi
-  dnl Check for API introduced in Mac OS X 10.3.
-  AC_CACHE_CHECK([for CFLocaleCopyCurrent], [gt_cv_func_CFLocaleCopyCurrent],
-    [gt_save_LIBS="$LIBS"
-     LIBS="$LIBS -Wl,-framework -Wl,CoreFoundation"
-     AC_LINK_IFELSE(
-       [AC_LANG_PROGRAM(
-          [[#include <CoreFoundation/CFLocale.h>]],
-          [[CFLocaleCopyCurrent();]])],
-       [gt_cv_func_CFLocaleCopyCurrent=yes],
-       [gt_cv_func_CFLocaleCopyCurrent=no])
-     LIBS="$gt_save_LIBS"])
-  if test $gt_cv_func_CFLocaleCopyCurrent = yes; then
-    AC_DEFINE([HAVE_CFLOCALECOPYCURRENT], [1],
-      [Define to 1 if you have the Mac OS X function CFLocaleCopyCurrent in the CoreFoundation framework.])
-  fi
-  INTL_MACOSX_LIBS=
-  if test $gt_cv_func_CFPreferencesCopyAppValue = yes || test $gt_cv_func_CFLocaleCopyCurrent = yes; then
-    INTL_MACOSX_LIBS="-Wl,-framework -Wl,CoreFoundation"
-  fi
-  AC_SUBST([INTL_MACOSX_LIBS])
-])
-
 # GLIB_WITH_NLS
 #-----------------
 glib_DEFUN([GLIB_WITH_NLS],
@@ -155,8 +109,6 @@ glib_DEFUN([GLIB_WITH_NLS],
     XGETTEXT=:
     INTLLIBS=
 
-    glib_gt_INTL_MACOSX
-
     AC_CHECK_HEADER(libintl.h,
      [gt_cv_func_dgettext_libintl="no"
       libintl_extra_libs=""
@@ -165,22 +117,16 @@ glib_DEFUN([GLIB_WITH_NLS],
       # First check in libc
       #
       AC_CACHE_CHECK([for ngettext in libc], gt_cv_func_ngettext_libc,
-        [AC_TRY_LINK([
+        [AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <libintl.h>
-],
-         [return !ngettext ("","", 1)],
-	  gt_cv_func_ngettext_libc=yes,
-          gt_cv_func_ngettext_libc=no)
+]], [[return !ngettext ("","", 1)]])],[gt_cv_func_ngettext_libc=yes],[gt_cv_func_ngettext_libc=no])
         ])
   
       if test "$gt_cv_func_ngettext_libc" = "yes" ; then
 	      AC_CACHE_CHECK([for dgettext in libc], gt_cv_func_dgettext_libc,
-        	[AC_TRY_LINK([
+        	[AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <libintl.h>
-],
-	          [return !dgettext ("","")],
-		  gt_cv_func_dgettext_libc=yes,
-	          gt_cv_func_dgettext_libc=no)
+]], [[return !dgettext ("","")]])],[gt_cv_func_dgettext_libc=yes],[gt_cv_func_dgettext_libc=no])
         	])
       fi
   
@@ -240,7 +186,7 @@ glib_DEFUN([GLIB_WITH_NLS],
       fi
   
       if test "$gt_cv_func_dgettext_libintl" = "yes"; then
-        INTLLIBS="-lintl $libintl_extra_libs $INTL_MACOSX_LIBS"
+        INTLLIBS="-lintl $libintl_extra_libs"
       fi
   
       if test "$gt_cv_have_gettext" = "yes"; then
@@ -269,11 +215,9 @@ msgstr ""
 	  AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
 	  GLIB_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
 	    [test -z "`$ac_dir/$ac_word -h 2>&1 | grep '(HELP)'`"], :)
-	  AC_TRY_LINK(, [extern int _nl_msg_cat_cntr;
-			 return _nl_msg_cat_cntr],
-	    [CATOBJEXT=.gmo 
-             DATADIRNAME=share],
-	    [case $host in
+	  AC_LINK_IFELSE([AC_LANG_PROGRAM([[]], [[extern int _nl_msg_cat_cntr;
+			 return _nl_msg_cat_cntr]])],[CATOBJEXT=.gmo 
+             DATADIRNAME=share],[case $host in
 	    *-*-solaris*)
 	    dnl On Solaris, if bind_textdomain_codeset is in libc,
 	    dnl GNU format message catalog is always supported,
@@ -324,10 +268,9 @@ msgstr ""
     # We need to process the po/ directory.
     POSUB=po
 
-    AC_OUTPUT_COMMANDS(
-      [case "$CONFIG_FILES" in *po/Makefile.in*)
+    AC_CONFIG_COMMANDS([default-1],[[case "$CONFIG_FILES" in *po/Makefile.in*)
         sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile
-      esac])
+      esac]],[[]])
 
     dnl These rules are solely for the distribution goal.  While doing this
     dnl we only have to keep exactly one list of the available catalogs
@@ -360,7 +303,7 @@ msgstr ""
 # on various variables needed by the Makefile.in.in installed by 
 # glib-gettextize.
 dnl
-AU_DEFUN([GLIB_GNU_GETTEXT],
+glib_DEFUN([GLIB_GNU_GETTEXT],
   [AC_REQUIRE([AC_PROG_CC])dnl
    
    GLIB_LC_MESSAGES
@@ -430,8 +373,7 @@ AU_DEFUN([GLIB_GNU_GETTEXT],
    rm -f po/POTFILES
    sed -e "/^#/d" -e "/^\$/d" -e "s,.*,	$posrcprefix& \\\\," -e "\$s/\(.*\) \\\\/\1/" \
 	< $srcdir/po/POTFILES.in > po/POTFILES
-  ],
-  [[$0: This macro is deprecated. You should use upstream gettext instead.]])
+  ])
 
 # AM_GLIB_DEFINE_LOCALEDIR(VARIABLE)
 # -------------------------------

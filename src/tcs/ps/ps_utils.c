@@ -41,12 +41,8 @@
 
 struct key_disk_cache *key_disk_cache_head = NULL;
 
-
-#ifdef SOLARIS
+/* */
 TSS_RESULT
-#else
-inline TSS_RESULT
-#endif
 read_data(int fd, void *data, UINT32 size)
 {
 	int rc;
@@ -64,11 +60,8 @@ read_data(int fd, void *data, UINT32 size)
 }
 
 
-#ifdef SOLARIS
+/* */
 TSS_RESULT
-#else
-inline TSS_RESULT
-#endif
 write_data(int fd, void *data, UINT32 size)
 {
 	int rc;
