@@ -1,3 +1,4 @@
+/* tss/tspi.h -*- C -*- */
 #if !defined(_TSPI_H_)
 #define _TSPI_H_
 

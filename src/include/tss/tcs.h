@@ -1,3 +1,4 @@
+/* tss/tcs.h -*- C -*- */
 #ifndef TCS_H
 #define TCS_H
 #include <tss/platform.h>

@@ -1,4 +1,4 @@
-/*++
+/*++ tss/tddlapi_error.h -*- C -*-
 
 TDDL error return codes for the TPM Device Driver Library Interface (TDDLI)
  

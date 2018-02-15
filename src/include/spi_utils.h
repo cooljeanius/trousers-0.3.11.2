@@ -1,5 +1,4 @@
-
-/*
+/* spi_utils.h -*- C -*-
  * Licensed Materials - Property of IBM
  *
  * trousers - An open source TCG Software Stack

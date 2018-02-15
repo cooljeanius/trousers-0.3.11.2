@@ -1,4 +1,4 @@
-
+/* tss/tcpa_error.h -*- C -*- */
 #ifndef __TCPA_ERROR_H__
 #define __TCPA_ERROR_H__
 

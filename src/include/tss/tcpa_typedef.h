@@ -1,4 +1,4 @@
-
+/* tss/tcpa_typedef.h -*- C -*- */
 #ifndef __TCPA_TYPEDEF_H__
 #define __TCPA_TYPEDEF_H__
 

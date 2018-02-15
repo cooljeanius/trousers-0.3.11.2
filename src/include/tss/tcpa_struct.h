@@ -1,4 +1,4 @@
-
+/* tss/tcpa_struct.h -*- C -*- */
 #ifndef __TCPA_STRUCT_H__
 #define __TCPA_STRUCT_H__
 
