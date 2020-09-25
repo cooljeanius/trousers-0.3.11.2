@@ -24,3 +24,7 @@ dist/trousers.spec
 po/POTFILES
 config.h
 stamp-h*
+*/.libs/*
+*/*/.libs/*
+*/*/*/.libs/*
+*/*/*/*/.libs/*
