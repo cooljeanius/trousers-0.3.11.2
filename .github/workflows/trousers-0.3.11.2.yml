@@ -1,0 +1,23 @@
+name: cooljeanius/trousers-0.3.11.2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3.5.0
+#     # 'Transformers::TravisCI::Scripts::Dependencies' dependencies are currently unsupported
+#     # 'compiler' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: "./configure --enable-silent-rules --enable-debug && make && make check"
+    strategy:
+      matrix:
+        compiler:
+        - clang
+        - gcc
