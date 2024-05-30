@@ -14,8 +14,8 @@ jobs:
 #     # 'compiler' was not transformed because there is no suitable equivalent in GitHub Actions
     - run: sudo apt-get -qq install -y openssl libssl-dev ssl-cert exuberant-ctags universal-ctags id-utils gettext global libasprintf-dev cscope
     - run: "./configure --enable-silent-rules --enable-debug CC=${{ matrix.compiler }}"
-    - run: "make || (sync && stat -t Makefile && sync && wc -l Makefile && sync && du Makefile && sync)"
-    - run: "make check || (make ID && make TAGS && make CTAGS && make GTAGS && make cscope)"
+    - run: "make || (sync && stat -t Makefile && sync && wc -l Makefile && sync && du Makefile && sync && sleep 1)"
+    - run: "make check || (sync && make ID && sync && make TAGS && sync && make CTAGS && sync && make GTAGS && sync && make cscope && sync)"
       if: success()
     strategy:
       fail-fast: false
