@@ -12,10 +12,10 @@ jobs:
       uses: actions/checkout@v3.5.0
 #     # 'Transformers::TravisCI::Scripts::Dependencies' dependencies are currently unsupported
 #     # 'compiler' was not transformed because there is no suitable equivalent in GitHub Actions
-    - run: sudo apt-get install -y openssl libssl-dev ssl-cert exuberant-ctags universal-ctags id-utils
+    - run: sudo apt-get install -y openssl libssl-dev ssl-cert exuberant-ctags universal-ctags id-utils gettext
     - run: "./configure --enable-silent-rules --enable-debug CC=${{ matrix.compiler }}"
     - run: "make || stat -t Makefile"
-    - run: "make check || make ID || make TAGS"
+    - run: "make check || (make ID && make TAGS)"
       if: success()
     strategy:
       fail-fast: false
