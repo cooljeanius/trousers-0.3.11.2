@@ -311,15 +311,13 @@ obj_rsakey_set_key_parms(TSS_HKEY hKey, TCPA_KEY_PARMS *parms)
 	memcpy(&rsakey->key.algorithmParms, parms, sizeof(TCPA_KEY_PARMS));
 
 	if (parms->parmSize > 0) {
-		if ((rsakey->key.algorithmParms.parms =
-					malloc(parms->parmSize)) == NULL) {
+		if ((rsakey->key.algorithmParms.parms = malloc(parms->parmSize)) == NULL) {
 			LogError("calloc of %d bytes failed.", parms->parmSize);
 			result = TSPERR(TSS_E_OUTOFMEMORY);
 			goto done;
 		}
 
-		memcpy(rsakey->key.algorithmParms.parms, parms->parms,
-		       parms->parmSize);
+		memcpy(rsakey->key.algorithmParms.parms, parms->parms, parms->parmSize);
 	} else {
 		rsakey->key.algorithmParms.parms = NULL;
 	}
