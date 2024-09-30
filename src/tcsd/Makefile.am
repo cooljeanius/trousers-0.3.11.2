@@ -13,3 +13,6 @@ endif
 if TSS_BUILD_PCR_EVENTS
 tcsd_CFLAGS+=-DTSS_BUILD_PCR_EVENTS
 endif
+
+distclean-local:
+	-rm -rf .deps || rmdir .deps || find . -name '.deps' -delete

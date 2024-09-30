@@ -236,3 +236,6 @@ if TSS_BUILD_CMK
 libtspi_la_SOURCES+=tspi_cmk.c obj_migdata.c rpc/@RPC@/rpc_cmk.c
 libtspi_la_CFLAGS+=-DTSS_BUILD_CMK
 endif
+
+distclean-local:
+	-rm -rf .deps || rmdir .deps || find . -name '.deps' -delete

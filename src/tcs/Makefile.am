@@ -140,3 +140,6 @@ if TSS_BUILD_CMK
 libtcs_a_SOURCES+=tcsi_cmk.c rpc/@RPC@/rpc_cmk.c
 libtcs_a_CFLAGS+=-DTSS_BUILD_CMK
 endif
+
+distclean-local:
+	-rm -rf .deps || rmdir .deps || find . -name '.deps' -delete

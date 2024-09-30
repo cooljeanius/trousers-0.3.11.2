@@ -9,3 +9,6 @@ endif
 if TSS_BUILD_SYM_CRYPTO
 libtrousers_la_SOURCES+=crypto/@CRYPTO_PACKAGE@/symmetric.c
 endif
+
+distclean-local:
+	-rm -rf .deps || rmdir .deps || find . -name '.deps' -delete

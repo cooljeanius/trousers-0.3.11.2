@@ -21,6 +21,8 @@ conftest*
 dist/tcsd.conf
 dist/fedora/trousers.spec
 dist/trousers.spec
+man/man5/tcsd.conf.5
+man/man8/tcsd.8
 po/POTFILES
 config.h
 stamp-h*

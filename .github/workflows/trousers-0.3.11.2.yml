@@ -1,25 +1,33 @@
+---
 name: cooljeanius/trousers-0.3.11.2
 on:
   push:
     branches:
-    - "**/*"
+      - "**/*"
   pull_request:
 jobs:
   test:
     runs-on: ubuntu-20.04
     steps:
-    - name: checkout
-      uses: actions/checkout@v4.2.0
-#     # 'Transformers::TravisCI::Scripts::Dependencies' dependencies are currently unsupported
-#     # 'compiler' was not transformed because there is no suitable equivalent in GitHub Actions
-    - run: sudo apt-get -qq install -y openssl libssl-dev ssl-cert exuberant-ctags universal-ctags id-utils gettext global libasprintf-dev cscope
-    - run: "./configure --enable-silent-rules --enable-debug CC=${{ matrix.compiler }}"
-    - run: "make || (sync && stat -t Makefile && sync && wc -l Makefile && sync && du Makefile && sync && sleep 1)"
-    - run: "make check || (sync && make ID && sync && make TAGS && sync && make CTAGS && sync && make GTAGS && sync && make cscope && sync)"
-      if: success()
+      - name: checkout
+        uses: actions/checkout@v4.2.0
+        # 'Transformers::TravisCI::Scripts::Dependencies' dependencies are
+        # currently unsupported
+        # 'compiler' was not transformed because there is no suitable equivalent
+        # in GitHub Actions
+      - name: Install dependencies via apt-get
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y openssl libssl-dev ssl-cert \
+            exuberant-ctags universal-ctags id-utils gettext global \
+            libasprintf-dev cscope
+      - run: "./configure --enable-silent-rules --enable-debug CC=${{ matrix.compiler }}"
+      - run: "make || (sync && stat -t Makefile && sync && wc -l Makefile && sync && du Makefile && sync && sleep 1)"
+      - run: "make check || (sync && make ID && sync && make TAGS && sync && make CTAGS && sync && make GTAGS && sync && make cscope && sync)"
+        if: success()
     strategy:
       fail-fast: false
       matrix:
         compiler:
-        - clang
-        - gcc
+          - clang
+          - gcc

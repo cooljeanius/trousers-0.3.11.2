@@ -377,6 +377,10 @@ AC_CHECK_TYPES([pthread_t])dnl
 
 # Checks for programs.
 AC_DISABLE_STATIC
+AM_PROG_AR
+m4_ifdef([AC_PROG_AR],[
+AC_PROG_AR
+])dnl
 AC_PROG_CPP
 AC_PROG_CXX
 AC_PROG_INSTALL
