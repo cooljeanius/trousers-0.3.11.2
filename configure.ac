@@ -3,9 +3,10 @@ dnl# configure.ac for the trousers project
 #
 
 AC_INIT([trousers],[0.3.11.2],[trousers-tech@lists.sf.net])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([build-aux])dnl
+AC_CONFIG_MACRO_DIR([m4])dnl
 dnl# warning: the move to autoheader here might cause some breakages:
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_HEADERS([config.h])dnl
 
 TSS_SPEC_MAJOR=1
 TSS_SPEC_MINOR=2

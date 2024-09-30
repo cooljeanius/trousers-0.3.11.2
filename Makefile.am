@@ -9,7 +9,7 @@ EXTRA_DIST = AUTHORS LICENSE NEWS NICETOHAVES README \
 
 CLEANFILES = po/POTFILES
 
-DISTCLEANFILES = *~ autoscan.log
+DISTCLEANFILES = *~ autoscan.log build-aux/*~
 
 distclean-local:
 	-rm -rf autom4te.cache || rmdir autom4te.cache
