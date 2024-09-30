@@ -306,6 +306,7 @@ obj_rsakey_set_key_parms(TSS_HKEY hKey, TCPA_KEY_PARMS *parms)
 	rsakey = (struct tr_rsakey_obj *)obj->data;
 
 	free(rsakey->key.algorithmParms.parms);
+	rsakey->key.algorithmParms.parms = NULL;
 
 	memcpy(&rsakey->key.algorithmParms, parms, sizeof(TCPA_KEY_PARMS));
 
