@@ -189,7 +189,7 @@ obj_pcrs_set_values(TSS_HPCRS hPcrs, TPM_PCR_COMPOSITE *pcrComp)
 {
 	TSS_RESULT result = TSS_SUCCESS;
 	TPM_PCR_SELECTION *select = &(pcrComp->select);
-	UINT16 i, val_idx = 0;
+	UINT32 i, val_idx = 0;
 
 	for (i = 0; i < select->sizeOfSelect * 8; i++) {
 		if (select->pcrSelect[i / 8] & (1 << (i % 8))) {
