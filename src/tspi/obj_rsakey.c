@@ -317,7 +317,9 @@ obj_rsakey_set_key_parms(TSS_HKEY hKey, TCPA_KEY_PARMS *parms)
 			goto done;
 		}
 
-		memcpy(rsakey->key.algorithmParms.parms, parms->parms, parms->parmSize);
+		if (rsakey->key.algorithmParms.parms != NULL) {
+			memcpy(rsakey->key.algorithmParms.parms, parms->parms, parms->parmSize);
+		}
 	} else {
 		rsakey->key.algorithmParms.parms = NULL;
 	}
