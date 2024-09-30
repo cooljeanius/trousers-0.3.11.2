@@ -251,6 +251,7 @@ ima_get_entry(FILE *handle, UINT32 pcr_index, UINT32 *num, TSS_PCR_EVENT **ppEve
 				if (event->rgbPcrValue == NULL) {
 					LogError("malloc of %d bytes failed.", 20);
 					free(event);
+					event = NULL;
 					result = TCSERR(TSS_E_OUTOFMEMORY);
 					goto done;
 				}
@@ -280,6 +281,7 @@ ima_get_entry(FILE *handle, UINT32 pcr_index, UINT32 *num, TSS_PCR_EVENT **ppEve
 						free(event);
 						LogError("Failed to read event log file");
 						result = TCSERR(TSS_E_INTERNAL_ERROR);
+						event = NULL;
 						goto done;
 					}
 				}
@@ -288,12 +290,14 @@ ima_get_entry(FILE *handle, UINT32 pcr_index, UINT32 *num, TSS_PCR_EVENT **ppEve
 					free(event);
 					LogError("Failed to read event log file");
 					result = TCSERR(TSS_E_INTERNAL_ERROR);
+					event = NULL;
 					goto done;
 				}
 				event->rgbEvent = malloc(event->ulEventLength + 1);
 				if (event->rgbEvent == NULL) {
 					free(event->rgbPcrValue);
 					free(event);
+					event = NULL;
 					LogError("malloc of %u bytes failed.",
 							event->ulEventLength);
 					result = TCSERR(TSS_E_OUTOFMEMORY);
@@ -303,6 +307,7 @@ ima_get_entry(FILE *handle, UINT32 pcr_index, UINT32 *num, TSS_PCR_EVENT **ppEve
 				if (fread(event->rgbEvent, 1, event->ulEventLength, fp) != event->ulEventLength ) {
 					free(event->rgbPcrValue);
 					free(event);
+					event = NULL;
 					LogError("Failed to read event log file");
 					result = TCSERR(TSS_E_INTERNAL_ERROR);
 					goto done;
@@ -316,6 +321,7 @@ ima_get_entry(FILE *handle, UINT32 pcr_index, UINT32 *num, TSS_PCR_EVENT **ppEve
 		if (fread(&len, 1, sizeof(len), fp) != sizeof(len)) {
 			free(event->rgbPcrValue);
 			free(event);
+			event = NULL;
 			LogError("Failed to read event log file");
 			result = TCSERR(TSS_E_INTERNAL_ERROR);
 			goto done;
@@ -324,6 +330,7 @@ ima_get_entry(FILE *handle, UINT32 pcr_index, UINT32 *num, TSS_PCR_EVENT **ppEve
 		if (fread(&len, 1, sizeof(len), fp) != sizeof(len)) {
 			free(event->rgbPcrValue);
 			free(event);
+			event = NULL;
 			LogError("Failed to read event log file");
 			result = TCSERR(TSS_E_INTERNAL_ERROR);
 			goto done;
