@@ -73,12 +73,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies via apt-get
-        run: |
-          sudo apt-get -qq update
-          sudo apt-get -qq install -y openssl libssl-dev ssl-cert \
-            gettext libc6-dev-amd64-cross libgcc-s1-amd64-cross
-
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
@@ -95,6 +89,17 @@ jobs:
           # For more details on CodeQL's query packs, refer to:
           # https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
           # queries: security-extended,security-and-quality
+
+      - name: Install dependencies via apt-get
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y openssl libssl-dev ssl-cert \
+            gettext libc6-dev-amd64-cross libgcc-s1-amd64-cross
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+        env:
+          MAKEFLAGS: "-ki"
 
       # If the analyze step fails for 1 of the languages you are analyzing with
       # "We were unable to automatically build your code", modify the matrix
