@@ -337,13 +337,15 @@ obj_migdata_set_msa_list(TSS_HMIGDATA hMigData, UINT32 msaListSize, BYTE *msaLis
 		result = TSPERR(TSS_E_OUTOFMEMORY);
 		goto done;
 	}
-	digest = migdata->msaList.migAuthDigest;
-	for (i = 0; i < count; i++) {
-		memcpy(digest->digest, msaList, sizeof(digest->digest));
-		msaList += sizeof(digest->digest);
-		digest++;
+	if (migdata->msaList.migAuthDigest != NULL) {
+		digest = migdata->msaList.migAuthDigest;
+		for (i = 0; i < count; i++) {
+			memcpy(digest->digest, msaList, sizeof(digest->digest));
+			msaList += sizeof(digest->digest);
+			digest++;
+		}
+		migdata->msaList.MSAlist = count;
 	}
-	migdata->msaList.MSAlist = count;
 
 	result = obj_migdata_calc_msa_digest(migdata);
 
